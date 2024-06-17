@@ -1,0 +1,81 @@
+﻿@model EmployeeManagement.Models.PayrollDto
+
+@{
+    ViewData["Title"] = "Payroll";
+}
+
+<h4>Payroll</h4>
+<hr />
+
+<div>
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+    <div>
+        <span class="text-success" style="font-weight:bold;font-size:20px">@Model.SuccessMessage</span>
+    </div>
+    }
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div>
+            <span class="text-danger" style="font-weight:bold;font-size:20px">@Model.ErrorMessage</span>
+        </div>
+    }
+    <form method="post" asp-action="CreatePayroll">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="hidden" asp-for="IsDataSubmitted"  value="@Model.IsDataSubmitted"/>
+                <select class="form-control" asp-for="SelectedDate" asp-items="@Model.DateRanges"></select>
+            </div>
+        </div>
+        <div class="mt-2">
+            <table class="table table-bordered">
+                <thead class="text-center">
+                    <tr>
+                        @foreach (var item in Model.Payrolls)
+                        {
+                            <th>@item.WeekDay<br />(@item.WorkedDate.ToString("MM/dd/yyyy"))</th>
+                        }
+                        <th>Hourly Rate($)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @foreach (var (value, index) in Model.Payrolls.Select((value, index) => (value, index)))
+                        {
+                            <td>
+                                <input type="hidden" asp-for="Payrolls[index].WorkedDate" value="@value.WorkedDate" />
+                                <input type="hidden" asp-for="Payrolls[index].Id" value="@value.Id" />
+                                <input type="hidden" asp-for="Payrolls[index].HourlyRate" value="@value.HourlyRate" />
+                                <input type="hidden" asp-for="Payrolls[index].WeekDay" value="@value.WeekDay" />
+                                @if (Model.IsDataSubmitted)
+                                {
+                                    <input type="number" class="form-control" asp-for="Payrolls[index].HoursWorked" value="@value.HoursWorked" disabled />
+                                }
+                                else
+                                {
+                                    <input type="number" class="form-control" asp-for="Payrolls[index].HoursWorked" value="@value.HoursWorked" />
+                                }
+                            </td>
+                        }
+                        <td>
+                             @if (Model.IsDataSubmitted)
+                                {
+                                <input type="number" asp-for="HourlyRate" class="form-control" value="@Model.HourlyRate" disabled />
+                            }
+                            else
+                            {
+                                <input type="number" asp-for="HourlyRate" class="form-control" value="@Model.HourlyRate" />
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            @if (!Model.IsDataSubmitted)
+            {
+                <div class="form-group" style="float:right">
+                    <input type="submit" class="btn btn-primary" value="Submit" />
+                </div>
+            }
+        </div>
+    </form>
+</div>

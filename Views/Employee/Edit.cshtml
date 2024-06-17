@@ -1,0 +1,69 @@
+﻿@using EmployeeManagement.Constants
+@model EmployeeManagement.Models.EmployeeDto
+
+
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<h4>Edit Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div>
+                <span class="text-success" style="font-weight:bold;font-size:20px">@Model.SuccessMessage</span>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div>
+                <span class="text-danger" style="font-weight:bold;font-size:20px">@Model.ErrorMessage</span>
+            </div>
+        }
+        <form asp-action="UpdateEmployee" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input asp-for="AspNetUserId" class="form-control" hidden />
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" readonly />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Department</label>
+                <select asp-for="DepartmentId" asp-items="@Model.Departments" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <textarea rows="5" asp-for="Address" class="form-control"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input type="tel" asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="CreatedOn" class="form-control" style="display:none" />
+            </div>
+            <div class="form-group">
+                <input asp-for="LastLoggedIn" class="form-control" style="display:none" />
+            </div>
+            <div class="form-group mt-2" style="float:right">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="GetAllEmployees" class="btn btn-primary">Back to List</a>
+</div>

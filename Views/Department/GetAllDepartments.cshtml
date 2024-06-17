@@ -1,0 +1,41 @@
+﻿@model IEnumerable<EmployeeManagement.Modals.Department>
+
+@{
+    ViewData["Title"] = "All Departments";
+}
+
+<h4>All Departments</h4>
+<hr />
+<p style="float:right">
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table table-bordered">
+    <thead class="text-center">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                    <div>
+                    @foreach (var error in item.Errors)
+                    {
+                        <label class="text-danger">@error</label>
+                    }
+                    </div>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

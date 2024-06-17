@@ -1,0 +1,73 @@
+﻿@using EmployeeManagement.Constants
+@model EmployeeManagement.Models.EmployeeDto
+
+@{
+    ViewData["Title"] = "Create Employee";
+}
+
+<h4>Create Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateEmployee" method="post">
+            @if (Model.Errors.Any())
+            {
+                <ul>
+                @foreach (string error in Model.Errors)
+                {
+                    <li class="text-danger">
+                        @error
+                    </li>
+                }
+                </ul>
+            }
+            <input asp-for="AspNetUserId" class="form-control" hidden />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" placeholder="Please enter Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input type="email" asp-for="Email" placeholder="Please enter Email" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <select asp-for="Role" class="form-control">
+                    <option value="@Roles.Employee.ToString()">@Roles.Employee.ToString()</option>
+                    <option value="@Roles.Admin.ToString()">@Roles.Admin.ToString()</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Department</label>
+                <select asp-for="DepartmentId" asp-items="@Model.Departments" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <textarea rows="5" asp-for="Address" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Phone Number</label>
+                <input asp-for="PhoneNumber" placeholder="Please enter Phone Number(xxx-xxx-xxxx)" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input type="password" asp-for="Password" placeholder="Please enter Password" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input type="password" asp-for="ConfirmPassword" placeholder="Please enter Password" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2" style="float:right">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (signInManager.IsSignedIn(User))
+{
+    <div>
+        <a asp-action="GetAllEmployees" class="btn btn-primary">Back to List</a>
+    </div>
+}
+
